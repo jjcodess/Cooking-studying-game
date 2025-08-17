@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Study Chef — Cozy Cooking Study Game</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
+</head>
+<body>
+  <header class="app-header">
+    <h1>🍳 Study <span>Chef</span></h1>
+    <div class="top-stats">
+      <div class="pill">⭐ XP: <span id="xp">0</span></div>
+      <div class="pill">🪙 Coins: <span id="coins">0</span></div>
+      <div class="pill">🔥 Streak: <span id="streak">0</span> days</div>
+      <button id="soundToggle" class="ghost">🔈</button>
+      <button id="resetBtn" class="ghost danger" title="Reset Save (localStorage)">↺</button>
+    </div>
+  </header>
+
+  <main class="grid">
+    <!-- Left column: Game scene -->
+    <section class="card scene">
+      <div class="scene-top">
+        <div class="chef" aria-hidden="true">
+          <div class="hat"></div>
+          <div class="face">
+            <div class="eye left"></div>
+            <div class="eye right"></div>
+            <div class="smile"></div>
+          </div>
+          <div class="body"></div>
+        </div>
+
+        <div class="stove">
+          <div class="pot">
+            <div class="bubble b1"></div>
+            <div class="bubble b2"></div>
+            <div class="bubble b3"></div>
+            <div class="steam s1"></div>
+            <div class="steam s2"></div>
+          </div>
+          <div class="flame"></div>
+        </div>
+      </div>
+
+      <div class="session-controls">
+        <div class="time big" id="timer">25:00</div>
+        <div class="session-buttons">
+          <button id="startFocus" class="primary">▶️ Start Focus</button>
+          <button id="pause" class="ghost">⏸ Pause</button>
+          <button id="breakBtn" class="secondary">🍵 Start Break</button>
+        </div>
+
+        <div class="durations">
+          <label>Focus:
+            <select id="focusLen">
+              <option value="25">25 min</option>
+              <option value="45">45 min</option>
+              <option value="60">60 min</option>
+              <option value="10">10 min (quick)</option>
+            </select>
+          </label>
+          <label>Break:
+            <select id="breakLen">
+              <option value="5">5 min</option>
+              <option value="10">10 min</option>
+              <option value="15">15 min</option>
+            </select>
+          </label>
+          <label>Mode:
+            <select id="mode">
+              <option value="pomodoro">Pomodoro</option>
+              <option value="free">Free Timer</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="now-playing">
+          <span id="stateDot" class="dot idle"></span>
+          <span id="sessionState">Idle — set a timer and cook up some focus!</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Middle: Tasks & Recipes -->
+    <section class="card">
+      <h2>📋 Tasks</h2>
+      <div class="task-new">
+        <input id="taskTitle" placeholder="New task (e.g., 'Bio hw pp. 12–18')" />
+        <select id="taskTag">
+          <option value="School">School</option>
+          <option value="Reading">Reading</option>
+          <option value="Math">Math</option>
+          <option value="Language">Language</option>
+        </select>
+        <button id="addTask" class="primary">Add</button>
+      </div>
+      <ul id="taskList" class="task-list" aria-live="polite"></ul>
+
+      <div class="divider"></div>
+
+      <h2>🥣 Recipes (cook on breaks)</h2>
+      <div id="recipes" class="recipes"></div>
+    </section>
+
+    <!-- Right: Inventory, Shop, Achievements -->
+    <section class="card">
+      <div class="tabs">
+        <button class="tab active" data-tab="inventory">Inventory</button>
+        <button class="tab" data-tab="shop">Shop</button>
+        <button class="tab" data-tab="achievements">Achievements</button>
+        <button class="tab" data-tab="stats">Stats</button>
+      </div>
+
+      <div class="tab-panels">
+        <div class="panel show" id="inventoryPanel">
+          <ul id="inventory" class="inventory"></ul>
+        </div>
+
+        <div class="panel" id="shopPanel">
+          <div id="shopItems" class="shop"></div>
+        </div>
+
+        <div class="panel" id="achievementsPanel">
+          <ul id="achievements" class="achievements"></ul>
+        </div>
+
+        <div class="panel" id="statsPanel">
+          <ul class="stats">
+            <li>Total Focus Minutes: <span id="totalMinutes">0</span></li>
+            <li>Sessions Completed: <span id="sessionsDone">0</span></li>
+            <li>Longest Streak: <span id="bestStreak">0</span></li>
+            <li>Recipes Cooked: <span id="recipesCooked">0</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <div>Made with ☀️ pastel pixels. <a href="#" id="exportBtn">Export Save</a> · <label class="import">Import <input type="file" id="importFile" accept=".json" /></label></div>
+    <div class="tiny">Data saves to your browser (localStorage). No accounts needed.</div>
+  </footer>
+
+  <!-- Toast -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <!-- Chime (simple sine) -->
+  <audio id="ding" preload="auto">
+    <source src="" type="audio/wav">
+  </audio>
+
+  <script src="script.js"></script>
+</body>
+</html>
